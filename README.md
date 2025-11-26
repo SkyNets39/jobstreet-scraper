@@ -80,7 +80,7 @@ Install:
 ## ⚙️ Important Configuration
 Edit all settings in config.py:
 - BASE_URL = "https://id.jobstreet.com" #You can change the country of Jobstreet by changing the "id" which default to Indonesia
-- CLASSIFICATION_ROUTE = "/id/jobs-in-accounting" #Choose the route for the your job classification
+- CLASSIFICATION_ROUTE = "/id/jobs-in-accounting" #Choose the route for job classification
 - USER_AGENTS #You can choose any user agents
 
 ## ▶️ Running the Scraper
