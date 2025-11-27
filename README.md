@@ -121,12 +121,14 @@ All defaults live in config.py, but are dynamically overridden by the GUI.
 ```python
 python app_gui.py
 ```
-#### GUI Input for Job Classification Field
+#### GUI Input and Operation
 1. Seek the job classification you want to scrape
-<img width="1776" height="1068" alt="image" src="https://github.com/user-attachments/assets/af957a29-eb99-4075-bc34-1de706ed54e1" />
-2. copy the classification path to the url (without "/")
-<img width="2804" height="1350" alt="image" src="https://github.com/user-attachments/assets/d13b8579-0e0e-4c2d-a386-b0b01045d1e4" />
+<img width="1912" height="1138" alt="image" src="https://github.com/user-attachments/assets/70116ead-6996-4fe4-9223-eb7bc87d2346" />
 
+2. Copy the job classification path URL and paste it to GUI. Make sure to input the correct country code.
+<img width="2880" height="1710" alt="image" src="https://github.com/user-attachments/assets/e45e7903-4a80-4b01-a42d-fb0a817f5576" />
+
+3. Lastly you can click "Start" button to start the scrap and "Stop" to stop the scraping process
 
 ### CLI Mode
 ```python
