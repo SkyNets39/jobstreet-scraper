@@ -2,54 +2,77 @@
 
 A fully automated and anti-ban web scraper built for extracting job listings by category from **Jobstreet** using:
 
-- **Selenium WebDriver**
+- **Python + Selenium**
 - **Undetected-Chromedriver (UC)**
-- **Human-like anti-bot behavior**
-- **Modular architecture**
-- **Pagination support**
-- **Crash-safe session recovery**
-- **Export to JSON or CSV using pandas**
+- **Human-like anti-bot behaviors**
+- **Tkinter Desktop GUI**
+- **Multithreaded scraping worker**
+- **Pagination handling**
+- **Crash-safe browser recovery**
+- **CSV output via pandas**
 
-This scraper collects job titles, company names, work types, salary ranges, and detail page URLs across multiple pages — safely bypassing common bot detection triggers.
+This project scrapes job listings (titles, companies, work types, salary ranges, and detail URLs) from **Jobstreet across any country**, using a **flexible classification URL builder** and a **safe multithreaded scraper engine**.
 
 ---
 
 ## 🚀 Features
 
-### ✅ **Anti-ban & Human Behavior Simulation**
-- Random human-like delays  
-- Small incremental scrolling  
-- Mouse jitter simulation  
-- Random user-agent rotation  
-- UC stealth mode (bypasses WebDriver detection)
+### ✅ Desktop GUI (Tkinter)
+A simple and user-friendly interface with:
 
-### ✅ **Stable Long-Run Scraping**
-- Safe navigation wrapper to recover from UC crashes
-- Automatic Chrome restart every 50 jobs
-- Graceful retry when encountering dead tabs or session drops
+- Country code selection (id/my/sg/ph)
+- Job classification route input
+- Maximum pages setting
+- CSV output path selection
+- Real-time logging panel
+- Start & Stop controls
+- Background scraping worker (UI stays responsive)
 
-### ✅ **Real Pagination**
-- Automatically scrapes multiple pages using the “Next” button
-- Configurable maximum pages (default `5`)
+---
 
-### ✅ **Modular Design**
-Each responsibility separated cleanly:
-- browser.py → Chrome driver & UC setup
-- crawler.py → Pagination + scraping workflow
-- parser.py → HTML parsing for list pages & detail pages
-- anti_ban.py → Human-like actions & bot avoidance
-- config.py → Centralized configurations
-- main.py → Runner & CSV exporter
+### ✅ Anti-Ban & Human Behavior Simulation
+- Randomized human-like delays  
+- Smooth incremental scrolling  
+- Random mouse jitter movements  
+- User-Agent rotation  
+- Undetected-Chromedriver stealth mode  
+- CAPTCHA/block page heuristic detection  
+- Natural pagination clicking  
+- No multi-threaded or parallel requests  
 
+---
 
-### ✅ **Clean Output**
-- Saves results into `results.csv`
-- Columns:
-  - Job Name  
-  - Company  
-  - Work Type  
-  - Salary Range  
-  - Link  
+### ✅ Stable Long-Run Scraping
+- Safe wrapper around `driver.get()`  
+- Automatic browser restart every 50 jobs  
+- Auto recovery if UC crashes  
+- Threading-based stop mechanism  
+- Saves all collected data even when stopped early  
+
+---
+
+### ✅ Flexible URL Classification
+Using `build_classification_url(country, classification)`:
+
+Works with:
+- id.jobstreet.com  
+- my.jobstreet.com  
+- sg.jobstreet.com  
+- ph.jobstreet.com  
+
+…and supports any `jobs-in-xxxx` classification page.
+
+---
+
+### ✅ Clean CSV Output
+Columns:
+- Job Name  
+- Company  
+- Work Type  
+- Salary Range  
+- Link  
+
+Saved using UTF-8-SIG (Excel-friendly).
 
 ---
 
@@ -57,11 +80,12 @@ Each responsibility separated cleanly:
 
 | Component | Technology |
 |----------|------------|
-| Language | Python 3.11 (recommended) |
+| UI | Tkinter |
 | Automation | Selenium WebDriver |
 | Stealth | undetected-chromedriver |
 | Parsing | Selenium + XPath |
-| Exporting | pandas DataFrame → CSV |
+| Exporting | pandas |
+| Language | Python 3.11 |
 | OS | Windows 10/11 (tested) |
 
 ---
@@ -75,23 +99,40 @@ Install:
 - Chromedriver (latest version)
 - Git (optional)
 
-Install Library:
+Install Dependencies:
 ```bash
 pip install selenium undetected-chromedriver pandas
 ```
 
 ---
 
-## ⚙️ Important Configuration
-Edit all settings in config.py:
-- BASE_URL = "https://id.jobstreet.com" (You can change the country of Jobstreet by changing the "id" which default to Indonesia)
-- CLASSIFICATION_ROUTE = "/id/jobs-in-accounting" (Choose the route for job classification)
-- USER_AGENTS (You can choose any user agents)
+## ⚙️ Configuration Overview
+All defaults live in config.py, but are dynamically overridden by the GUI.
+- Key config values:
+- COUNTRY_CODE
+- JOB_CLASSIFICATION
+- MAX_PAGES_PER_RUN
+- HEADLESS
+- USER_AGENTS
+- DELAY_MIN, DELAY_MAX
 
 ## ▶️ Running the Scraper
+### GUI Mode
+```python
+python app_gui.py
+```
+#### GUI Input for Job Classification Field
+1. Seek the job classification you want to scrape
+<img width="1776" height="1068" alt="image" src="https://github.com/user-attachments/assets/af957a29-eb99-4075-bc34-1de706ed54e1" />
+2. copy the classification path to the url (without "/")
+<img width="2804" height="1350" alt="image" src="https://github.com/user-attachments/assets/d13b8579-0e0e-4c2d-a386-b0b01045d1e4" />
+
+
+### CLI Mode
 ```python
 python main.py
 ```
+
 ## Architecture Overview
 | File | Description |
 |----------|------------|
@@ -101,7 +142,8 @@ parser.py | Extract job links & job details via XPath
 anti_ban.py | Scroll, delay, mouse movement, captcha heuristics
 config.py | User configuration for routes, delay, UA, etc
 main.py | Runner + CSV export
-results.csv | Output CSV file
+app_gui.py | GUI, threading, logging, run/stop control
+utils.py | URL builder for any country + classification
 
 ## 🔒 Anti-Ban Strategies Used
 This scraper is engineered to avoid triggering Jobstreet’s bot detection:
