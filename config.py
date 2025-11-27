@@ -1,24 +1,33 @@
+# config.py
 from typing import List
 
-# --- Basic settings ---
-BASE_URL = "https://id.jobstreet.com"
-CLASSIFICATION_ROUTE = "/id/jobs-in-information-communication-technology"
-RESULTS_PER_PAGE = 20  # approximate, not strictly required by scraper
-MAX_PAGES_PER_RUN = 2  # adjust to your acceptable daily limit
-HEADLESS = False  # recommended False to reduce detection
+# --- Defaults (user can override from GUI) ---
+COUNTRY_CODE = "id"
+JOB_CLASSIFICATION = "jobs-in-information-communication-technology"
+
+# NOTE:
+# BASE_URL, CLASSIFICATION_ROUTE, FULL_CLASSIFICATION_ROUTE
+# will be dynamically overridden by the GUI and crawler
+BASE_URL = f"https://{COUNTRY_CODE}.jobstreet.com"
+CLASSIFICATION_ROUTE = f"/{JOB_CLASSIFICATION}"
+FULL_CLASSIFICATION_ROUTE = f"{BASE_URL}{CLASSIFICATION_ROUTE}"
+
+# Scraper behavior
+MAX_PAGES_PER_RUN = 2  # safe default for testing; GUI will override
+HEADLESS = False
 WINDOW_SIZE = (1366, 768)
 
-# Delays (for anti-ban)
+# Delays (anti-ban)
 DELAY_MIN = 1.2
 DELAY_MAX = 2.4
 SCROLL_PAUSE = 0.4
 
-# --- Retry & timeout ---
-REQUEST_TIMEOUT = 10  # seconds for explicit waits
+# Retry & timeout
+REQUEST_TIMEOUT = 10
 RETRY_LIMIT = 3
-RETRY_BACKOFF = 2  # multiplier for exponential backoff
+RETRY_BACKOFF = 2
 
-# --- Storage ---
+# Storage
 OUTPUT_JSON = "results.json"
 OUTPUT_CSV = "results.csv"
 COOKIES_FILE = "cookies.pkl"
@@ -30,13 +39,11 @@ USER_AGENTS = [
    "Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 ]
 
-# --- Optional proxies list: format "ip:port" or "user:pass@ip:port" if needed ---
 PROXIES: List[str] = [
     # "username:password@1.2.3.4:8000",
-    # "5.6.7.8:3128",
 ]
 
-# --- Login ---
+# Login
 ENABLE_LOGIN = False
 LOGIN_EMAIL = "your@email.com"
 LOGIN_PASSWORD = "yourpassword"
